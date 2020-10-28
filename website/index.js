@@ -52,8 +52,17 @@ $(function () {
       $(".alert-danger").removeClass("d-none");
       return;
     }
-    //TODO: need to calculate how many seconds to selected date
-    var waitSeconds = 100;
+
+    var strDate = inputDate + "," + inputTime;
+    var selectedDate = new Date(strDate);
+    var waitSeconds = (selectedDate - new Date()) / 1000;
+    if (waitSeconds < 0) {
+      $(".alert-danger").removeClass("d-none");
+      $(".alert-danger p").text("Fecha y hora debe ser posterior a la actual");
+      return;
+    }
+    waitSeconds = Math.round(waitSeconds);
+
     sendData(waitSeconds, inputMessage, radio, inputEmail, inputPhone);
   });
 
