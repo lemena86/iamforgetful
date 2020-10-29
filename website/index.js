@@ -1,4 +1,4 @@
-var API_ENDPOINT = "https://myapigateway";
+var API_ENDPOINT = "YOUR_API_ENDPOINT";
 $(function () {
   $("#inputDate").datepicker({ minDate: 0, maxDate: 364 });
   $("#inputDate").datepicker().datepicker("setDate", new Date());
@@ -63,7 +63,15 @@ $(function () {
     }
     waitSeconds = Math.round(waitSeconds);
 
-    sendData(waitSeconds, inputMessage, radio, inputEmail, inputPhone);
+    sendData(
+      inputDate,
+      inputTime,
+      waitSeconds,
+      inputMessage,
+      radio,
+      inputEmail,
+      inputPhone
+    );
   });
 
   function isEmail(email) {
@@ -75,26 +83,35 @@ $(function () {
     return regexPattern.test(phno);
   }
 
-  function sendData(waitSeconds, message, preference, email, phone) {
-    $.ajax({
+  function sendData(
+    date,
+    time,
+    waitSeconds,
+    message,
+    preference,
+    email,
+    phone
+  ) {
+    fetch(API_ENDPOINT, {
+      headers: {
+        "Content-type": "application/json",
+      },
       method: "POST",
-      url: API_ENDPOINT,
-      data: {
+      body: JSON.stringify({
         waitSeconds,
-        message,
         preference,
+        message,
         email,
         phone,
-      },
-      xhrFields: {
-        withCredentials: true,
-      },
+      }),
+      mode: "cors",
     })
-      .done(function (msg) {
+      .then((resp) => resp.json())
+      .then(function (data) {
         $(".alert-success").removeClass("d-none");
         $("#send-time").text(date + " a las " + time);
       })
-      .fail(function () {
+      .catch(function (err) {
         $(".alert-danger").removeClass("d-none");
         $(".alert-danger p").text("Ha ocurrido un error :(");
       });

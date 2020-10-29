@@ -1,8 +1,6 @@
 var aws = require("aws-sdk");
 var ses = new aws.SES();
 
-let SOURCE_EMAIL_ADDRESS = process.env.SOURCE_EMAIL_ADDRESS;
-
 exports.handler = (event, context, callback) => {
   var params = {
     Destination: {
@@ -14,7 +12,7 @@ exports.handler = (event, context, callback) => {
       },
       Subject: { Data: "Recordatorio de iamforgetful.luismena.info" },
     },
-    Source: SOURCE_EMAIL_ADDRESS,
+    Source: process.env.SOURCE_EMAIL_ADDRESS,
   };
 
   ses.sendEmail(params, function (err, data) {
