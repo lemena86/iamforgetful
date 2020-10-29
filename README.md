@@ -1,2 +1,5 @@
 # iamforgetful
-Serverless application with state machine
+
+Full serverless application
+
+![Alt text](infra/Architectura.jpg?raw=true "Architecture")
